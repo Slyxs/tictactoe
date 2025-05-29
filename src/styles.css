@@ -1,0 +1,84 @@
+.tictactoe-game {
+    background-color: #f0f0f0;
+    padding: 15px;
+    border-radius: 8px;
+    max-width: 400px; /* Max width for the game container */
+    margin: auto; /* Center the game container if it's narrower than message */
+    border: 1px solid #ccc;
+}
+
+.tictactoe-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 240px; /* Fixed size for the board */
+    height: 240px;
+    margin: 15px auto; /* Center board within its container */
+    border: 2px solid #333;
+    background-color: #fff;
+}
+
+.tictactoe-board .cell {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5em; /* Larger font for X and O */
+    font-weight: bold;
+    cursor: pointer;
+    box-sizing: border-box; /* Ensure padding/border don't increase size */
+    color: #333;
+}
+
+.tictactoe-board .cell:hover {
+    background-color: #e9e9e9;
+}
+
+/* Player/AI info styling */
+.tictactoe-game h3 {
+    font-size: 1em;
+}
+.tictactoe-game q {
+    font-style: italic;
+    color: #555;
+    font-size: 0.9em;
+}
+
+.tictactoe-game .avatar img {
+  width: 30px; /* Smaller avatars for the game display */
+  height: 30px;
+  border-radius: 50%;
+}
+
+/* Ensure flex containers behave as expected */
+.flex-container {
+    display: flex;
+}
+.flexFlowColumn {
+    flex-flow: column;
+}
+.flexGap10 {
+    gap: 10px;
+}
+.alignItemsCenter {
+    align-items: center;
+}
+.justifyContentFlexStart {
+    justify-content: flex-start;
+}
+.justifyContentFlexEnd {
+    justify-content: flex-end;
+}
+.expander {
+    flex-grow: 1;
+}
+.margin0 {
+    margin: 0;
+}
+
+/* Button styling consistency */
+.menu_button_icon {
+    padding: 5px 8px; /* Adjust padding for icon buttons */
+}

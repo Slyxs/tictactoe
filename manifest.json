@@ -1,12 +1,12 @@
 {
-    "display_name": "Template Extension",
-    "loading_order": 1,
+    "display_name": "Tic-Tac-Toe Game",
+    "loading_order": 2,
     "requires": [],
     "optional": [],
     "js": "dist/index.js",
     "css": "",
-    "author": "Cohee1207",
+    "author": "YourName",
     "version": "1.0.0",
-    "homePage": "https://github.com/Cohee1207/Extension-ReactTemplate",
+    "homePage": "your-repo-link-here",
     "auto_update": true
 }
