@@ -24,26 +24,22 @@ const generateRaw = await importFromScript('generateRaw');
 class TicTacToeGame {
     static gamesLaunched = 0;
 
-    static opponentMovePrompt = `You are an expert Tic-Tac-Toe AI. You are playing as '{{aiSymbol}}'.
-The board is a 3x3 grid. 'X' is one player, 'O' is the other. Empty cells are '-'.
-
-Your goal is to win or draw.
-
-Current board state (rows are 0-2, columns are 0-2):
-{{board_ascii}}
-
-Available moves are provided as (row_index, column_index) pairs, listed one per line below.
-Choose the BEST possible move from the list.
-Your response MUST be ONLY the chosen (row_index, column_index) pair.
-For example, if you choose row 1, column 1, your response must be exactly: (1, 1)
-Do NOT include any other text, explanation, or formatting.
-
-Available moves:
-{{moves_list}}
+    static opponentMovePrompt = `You are an expert Tic-Tac-Toe AI. You are playing as '{{aiSymbol}}'.\n
+The board is a 3x3 grid. 'X' is one player, 'O' is the other. Empty cells are '-'.\n\n
+Your goal is to win or draw.\n\n
+Current board state (rows are 0-2, columns are 0-2):\n
+{{board_ascii}}\n\n
+Available moves are provided as (row_index, column_index) pairs, listed one per line below.\n
+Choose the BEST possible move from the list.\n
+Your response MUST be ONLY the chosen (row_index, column_index) pair.\n
+For example, if you choose row 1, column 1, your response must be exactly: (1, 1)\n
+Do NOT include any other text, explanation, or formatting.\n\n
+Available moves:\n
+{{moves_list}}\n
 Your move:`;
-    static commentPrompt = `You are {{char}}. You just played a game of Tic-Tac-Toe against {{user}}.
-{{user}} was playing as '{{playerSymbol}}' and you were '{{aiSymbol}}'.
-The outcome of the game was: {{outcome}}.
+    static commentPrompt = `You are {{char}}. You just played a game of Tic-Tac-Toe against {{user}}.\n
+{{user}} was playing as '{{playerSymbol}}' and you were '{{aiSymbol}}'.\n
+The outcome of the game was: {{outcome}}.\n
 Write a short, {{random:witty,playful,sarcastic,smug,thoughtful,surprised,cheeky}} comment about the game, from your perspective as {{char}}. Keep it brief, like a quick chat message.`;
 
     constructor(playerSymbol) {
