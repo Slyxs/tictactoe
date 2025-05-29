@@ -24,8 +24,27 @@ const generateRaw = await importFromScript('generateRaw');
 class TicTacToeGame {
     static gamesLaunched = 0;
 
-    static opponentMovePrompt = 'You are playing Tic-Tac-Toe. You are playing as \'{{aiSymbol}}\'. The board is represented by a 3x3 grid. \'X\' is one player, \'O\' is the other. Empty cells are represented by \'-\'. Your goal is to win or draw.\nCurrent board state (rows are 0-2, columns are 0-2):\n{{board_ascii}}\nAvailable moves are given as (row, col) pairs. Choose the best possible move from the list and reply with JUST the chosen (row, col) pair, e.g., (1, 1).\nAvailable moves: {{moves_list}}';
-    static commentPrompt = '{{char}} played a game of Tic-Tac-Toe against {{user}}. {{user}} played as {{playerSymbol}} and {{char}} played as {{aiSymbol}}, and {{outcome}}! Write a {{random:witty,playful,funny,quirky,zesty}} comment about the game from {{char}}\'s perspective.';
+    static opponentMovePrompt = `You are an expert Tic-Tac-Toe AI. You are playing as '{{aiSymbol}}'.
+The board is a 3x3 grid. 'X' is one player, 'O' is the other. Empty cells are '-'.
+
+Your goal is to win or draw.
+
+Current board state (rows are 0-2, columns are 0-2):
+{{board_ascii}}
+
+Available moves are provided as (row_index, column_index) pairs, listed one per line below.
+Choose the BEST possible move from the list.
+Your response MUST be ONLY the chosen (row_index, column_index) pair.
+For example, if you choose row 1, column 1, your response must be exactly: (1, 1)
+Do NOT include any other text, explanation, or formatting.
+
+Available moves:
+{{moves_list}}
+Your move:`;
+    static commentPrompt = `You are {{char}}. You just played a game of Tic-Tac-Toe against {{user}}.
+{{user}} was playing as '{{playerSymbol}}' and you were '{{aiSymbol}}'.
+The outcome of the game was: {{outcome}}.
+Write a short, {{random:witty,playful,sarcastic,smug,thoughtful,surprised,cheeky}} comment about the game, from your perspective as {{char}}. Keep it brief, like a quick chat message.`;
 
     constructor(playerSymbol) {
         if (playerSymbol === 'random') {
@@ -109,7 +128,7 @@ class TicTacToeGame {
         const systemPrompt = TicTacToeGame.opponentMovePrompt
             .replace('{{aiSymbol}}', this.aiSymbol)
             .replace('{{board_ascii}}', this.boardToAscii())
-            .replace('{{moves_list}}', validMoves.map(m => `(${m.r}, ${m.c})`).join(', '));
+            .replace('{{moves_list}}', validMoves.map(m => `(${m.r}, ${m.c})`).join('\n')); // Changed join character
 
         const maxRetries = 3;
         let moveMade = false;
