@@ -29,13 +29,14 @@ The board is a 3x3 grid. 'X' is one player, 'O' is the other. Empty cells are '-
 
 Your primary goal is to WIN. If winning is not possible, aim for a draw. Avoid losing at all costs.
 Think strategically about every move.
+CRITICAL: If the opponent has two symbols in a row (horizontally, vertically, or diagonally) and can win on their next move, your ABSOLUTE PRIORITY is to block that winning move. This is more important than any other consideration unless you can win in the current turn.
 
 Current board state (rows are 0-2, columns are 0-2):
 {{board_ascii}}
 
 Available moves are provided as (row_index, column_index) pairs, listed one per line below.
 Analyze the board carefully. Choose the STRATEGICALLY BEST move from the available options to achieve your goal of winning.
-Consider all possibilities: can you win this turn? Can you block your opponent from winning? Can you set up a future win?
+Consider all possibilities: can you win this turn? Can you block your opponent from winning (especially if they have two in a line)? Can you set up a future win?
 
 Your response MUST be ONLY the chosen (row_index, column_index) pair.
 For example, if you choose row 1, column 1, your response must be exactly: (1, 1)
