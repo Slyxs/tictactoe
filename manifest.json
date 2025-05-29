@@ -6,7 +6,7 @@
     "js": "dist/index.js",
     "css": "",
     "author": "YourName",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "homePage": "your-repo-link-here",
     "auto_update": true
 }

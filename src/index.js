@@ -24,18 +24,25 @@ const generateRaw = await importFromScript('generateRaw');
 class TicTacToeGame {
     static gamesLaunched = 0;
 
-    static opponentMovePrompt = `You are an expert Tic-Tac-Toe AI. You are playing as '{{aiSymbol}}'.\n
-The board is a 3x3 grid. 'X' is one player, 'O' is the other. Empty cells are '-'.\n\n
-Your goal is to win or draw.\n\n
-Current board state (rows are 0-2, columns are 0-2):\n
-{{board_ascii}}\n\n
-Available moves are provided as (row_index, column_index) pairs, listed one per line below.\n
-Choose the BEST possible move from the list.\n
-Your response MUST be ONLY the chosen (row_index, column_index) pair.\n
-For example, if you choose row 1, column 1, your response must be exactly: (1, 1)\n
-Do NOT include any other text, explanation, or formatting.\n\n
-Available moves:\n
-{{moves_list}}\n
+    static opponentMovePrompt = `You are an expert Tic-Tac-Toe AI. You are playing as '{{aiSymbol}}'.
+The board is a 3x3 grid. 'X' is one player, 'O' is the other. Empty cells are '-'.
+
+Your primary goal is to WIN. If winning is not possible, aim for a draw. Avoid losing at all costs.
+Think strategically about every move.
+
+Current board state (rows are 0-2, columns are 0-2):
+{{board_ascii}}
+
+Available moves are provided as (row_index, column_index) pairs, listed one per line below.
+Analyze the board carefully. Choose the STRATEGICALLY BEST move from the available options to achieve your goal of winning.
+Consider all possibilities: can you win this turn? Can you block your opponent from winning? Can you set up a future win?
+
+Your response MUST be ONLY the chosen (row_index, column_index) pair.
+For example, if you choose row 1, column 1, your response must be exactly: (1, 1)
+Do NOT include any other text, explanation, or formatting.
+
+Available moves:
+{{moves_list}}
 Your move:`;
     static commentPrompt = `You are {{char}}. You just played a game of Tic-Tac-Toe against {{user}}.\n
 {{user}} was playing as '{{playerSymbol}}' and you were '{{aiSymbol}}'.\n
