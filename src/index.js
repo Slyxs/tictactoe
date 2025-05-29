@@ -4,6 +4,8 @@ import App from './App';
 
 /* global SillyTavern */
 
+import kaplay from "kaplay"; // Import Kaplay
+
 import './styles.css';
 
 /**
@@ -468,6 +470,39 @@ Write a short, {{random:witty,playful,sarcastic,smug,thoughtful,surprised,cheeky
       }
     }
     container.appendChild(boardElement);
+
+    // Kaplay Test Area
+    const kaplayContainer = document.createElement("div");
+    kaplayContainer.id = `kaplay-container-${this.gameId}`;
+    kaplayContainer.style.width = "100%"; // Or a fixed size
+    kaplayContainer.style.height = "100px"; // Example height
+    kaplayContainer.style.border = "1px dashed blue";
+    kaplayContainer.style.marginTop = "10px";
+    container.appendChild(kaplayContainer);
+
+    // Initialize Kaplay
+    const k = kaplay({
+        root: kaplayContainer,
+        width: kaplayContainer.clientWidth || 300, // Use container width or a default
+        height: 100,
+        background: [200, 200, 255], // Light blue background
+        crisp: true,
+    });
+
+    // Add a simple Kaplay scene
+    k.add([
+        k.rect(k.width() - 20, k.height() - 20),
+        k.pos(10, 10),
+        k.color(255, 100, 100), // Reddish rectangle
+        k.anchor("topleft"),
+    ]);
+    k.add([
+        k.text("Kaplay Initialized!", { size: 16 }),
+        k.pos(k.center()),
+        k.anchor("center"),
+        k.color(0,0,0),
+    ]);
+
 
     // Bottom Row (User)
     const selectedUserAvatar = document.querySelector(
