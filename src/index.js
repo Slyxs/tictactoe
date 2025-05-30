@@ -99,32 +99,82 @@ class KaplayCanvasInstance {
             root: this.kaplayRootElement,
             width: this.kaplayRootElement.clientWidth,
             height: this.kaplayRootElement.clientHeight,
-            background: [20, 20, 50], // Dark blue background for Kaplay
+            background: [180, 180, 200], // Light grayish-blue background
             crisp: true,
         });
 
-        // Simple Kaplay scene
-        this.k.add([
-            this.k.rect(this.k.width() * 0.8, this.k.height() * 0.8),
+        // --- Game specific logic starts here ---
+
+        // Asset loading (example - replace with your actual assets)
+        // To use an image background:
+        // 1. Place your image (e.g., "my_background.png") in a folder accessible by the extension,
+        //    e.g., create a folder "c:\Kaplay-game\tictactoe\assets\" and put it there.
+        // 2. Update your webpack config if necessary to copy assets to dist, or ensure paths are correct.
+        //    A simple way for local testing is to put assets in SillyTavern's public folder structure.
+        //    For an extension named "my-kaplay-extension", the path might be:
+        //    "extensions/third-party/my-kaplay-extension/assets/my_background.png"
+        // this.k.loadSprite("bg-image", "path/to/your/background-image.png");
+        // this.k.add([
+        //     this.k.sprite("bg-image"),
+        //     this.k.pos(0, 0),
+        //     this.k.scaleTo(this.k.width(), this.k.height()), // Scale to fit canvas
+        //     this.k.z(-1), // Send to back
+        // ]);
+
+        // Player properties
+        const PLAYER_SIZE = 30;
+        const PLAYER_MOVE_SPEED = 7; // Pixels to move per key event
+
+        // Add player (a red square)
+        // To use a sprite for the player:
+        // this.k.loadSprite("player-sprite", "path/to/your/player-sprite.png");
+        // const player = this.k.add([
+        //     this.k.sprite("player-sprite"), 
+        //     // ... other components like pos, anchor, area, "player" tag
+        // ]);
+        const player = this.k.add([
+            this.k.rect(PLAYER_SIZE, PLAYER_SIZE),
             this.k.pos(this.k.center()),
             this.k.anchor("center"),
-            this.k.color(100, 100, 255), // A blueish rectangle
-            this.k.outline(4, this.k.rgb(255,255,255)),
-        ]);
-        this.k.add([
-            this.k.text("Kaplay Active!", { size: Math.min(this.k.width()/10, 24) }),
-            this.k.pos(this.k.center()),
-            this.k.anchor("center"),
-            this.k.color(255, 255, 255),
+            this.k.color(255, 0, 0), // Red
+            this.k.area(), // For potential collision detection later
+            "player", // Tag
         ]);
 
-        // Add a close button within Kaplay (optional, example)
+        // Player movement and boundary checks
+        const checkPlayerBounds = () => {
+            const halfSize = player.width / 2; // Assuming square player for simplicity with anchor("center")
+            player.pos.x = Math.max(halfSize, Math.min(this.k.width() - halfSize, player.pos.x));
+            player.pos.y = Math.max(halfSize, Math.min(this.k.height() - halfSize, player.pos.y));
+        };
+
+        this.k.onKeyDown("left", () => {
+            player.moveBy(-PLAYER_MOVE_SPEED, 0);
+            checkPlayerBounds();
+        });
+        this.k.onKeyDown("right", () => {
+            player.moveBy(PLAYER_MOVE_SPEED, 0);
+            checkPlayerBounds();
+        });
+        this.k.onKeyDown("up", () => {
+            player.moveBy(0, -PLAYER_MOVE_SPEED);
+            checkPlayerBounds();
+        });
+        this.k.onKeyDown("down", () => {
+            player.moveBy(0, PLAYER_MOVE_SPEED);
+            checkPlayerBounds();
+        });
+        
+        // --- Game specific logic ends here ---
+
+        // Add a close button (retained from previous example)
         const closeButton = this.k.add([
             this.k.rect(80, 30, { radius: 5 }),
             this.k.pos(this.k.width() - 10, 10),
             this.k.anchor("topright"),
             this.k.color(200, 50, 50),
             this.k.area(),
+            this.k.z(100), // Ensure button is on top
             "close_kaplay_button"
         ]);
         closeButton.add([
@@ -134,18 +184,15 @@ class KaplayCanvasInstance {
         ]);
         this.k.onClick("close_kaplay_button", () => {
             this.destroy();
-            // Restore original message or a placeholder
             messageText.innerHTML = "[Kaplay Canvas Closed]";
-            messageText.style.padding = ""; // Reset padding
-            chatMessage.style.order = ""; // Reset order
-            // Potentially remove the chat message or update it in context.chat
+            messageText.style.padding = ""; 
+            chatMessage.style.order = ""; 
              const msgIdx = context.chat.findIndex(m => m.mes === `[Kaplay Canvas Initialized]` || m.mes === this.instanceId);
              if (msgIdx !== -1) {
                  context.chat[msgIdx].mes = "[Kaplay Canvas Closed by user]";
                  context.forceUpdateChat(); 
              }
         });
-
 
     }, 50); // Small delay for DOM to report correct clientWidth/Height
 
