@@ -1,4 +1,5 @@
 /* global SillyTavern */
+import backgroundImage from './assets/background/Captura.PNG';
 
 function App() {
     // This component is not directly used for the game UI,
@@ -6,7 +7,10 @@ function App() {
     // following the pattern of the reference code.
     // It's kept minimal to satisfy the project structure.
     return (
-        <div style={{ display: 'none' }}>
+        <div style={{
+            display: 'none',
+            backgroundImage: `url(${backgroundImage})`,
+        }}>
             Tic-Tac-Toe Extension Core Logic Loaded.
         </div>
     );
