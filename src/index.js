@@ -99,42 +99,31 @@ class KaplayCanvasInstance {
             root: this.kaplayRootElement,
             width: this.kaplayRootElement.clientWidth,
             height: this.kaplayRootElement.clientHeight,
-            background: [180, 180, 200], // Light grayish-blue background
+            background: [0, 0, 0, 1], // Default background color (black)
             crisp: true,
         });
 
-        // --- Game specific logic starts here ---
+        // Load assets
+        // Ensure CAPTURA.PNG is in a location like 'public/sprites/CAPTURA.PNG'
+        // or adjust the path.
+        this.k.loadSprite("backgroundImage", "sprites/CAPTURA.PNG");
 
-        // Asset loading (example - replace with your actual assets)
-        // To use an image background:
-        // 1. Place your image (e.g., "my_background.png") in a folder accessible by the extension,
-        //    e.g., create a folder "c:\Kaplay-game\tictactoe\assets\" and put it there.
-        // 2. Update your webpack config if necessary to copy assets to dist, or ensure paths are correct.
-        //    A simple way for local testing is to put assets in SillyTavern's public folder structure.
-        //    For an extension named "my-kaplay-extension", the path might be:
-        //    "extensions/third-party/my-kaplay-extension/assets/my_background.png"
-        // this.k.loadSprite("bg-image", "path/to/your/background-image.png");
-        // this.k.add([
-        //     this.k.sprite("bg-image"),
-        //     this.k.pos(0, 0),
-        //     this.k.scaleTo(this.k.width(), this.k.height()), // Scale to fit canvas
-        //     this.k.z(-1), // Send to back
-        // ]);
+        // Add the background image (the map to be traveled)
+        const backgroundMap = this.k.add([
+            this.k.sprite("backgroundImage"),
+            this.k.pos(0, 0), // Position at top-left corner
+            this.k.anchor("topleft"),
+            this.k.z(-1), // Ensure it's drawn behind other game objects
+        ]);
 
         // Player properties
-        const PLAYER_SIZE = 30;
-        const PLAYER_MOVE_SPEED = 7; // Pixels to move per key event
+        const PLAYER_SIZE = 32;
+        const PLAYER_MOVE_SPEED = 200; // Pixels to move per key event
 
         // Add player (a red square)
-        // To use a sprite for the player:
-        // this.k.loadSprite("player-sprite", "path/to/your/player-sprite.png");
-        // const player = this.k.add([
-        //     this.k.sprite("player-sprite"), 
-        //     // ... other components like pos, anchor, area, "player" tag
-        // ]);
         const player = this.k.add([
             this.k.rect(PLAYER_SIZE, PLAYER_SIZE),
-            this.k.pos(this.k.center()),
+            this.k.pos(this.k.width() / 2, this.k.height() / 2), // Initial position: center of the screen
             this.k.anchor("center"),
             this.k.color(255, 0, 0), // Red
             this.k.area(), // For potential collision detection later
@@ -149,23 +138,24 @@ class KaplayCanvasInstance {
         };
 
         this.k.onKeyDown("left", () => {
-            player.moveBy(-PLAYER_MOVE_SPEED, 0);
-            checkPlayerBounds();
+            player.move(-PLAYER_MOVE_SPEED, 0);
         });
         this.k.onKeyDown("right", () => {
-            player.moveBy(PLAYER_MOVE_SPEED, 0);
-            checkPlayerBounds();
+            player.move(PLAYER_MOVE_SPEED, 0);
         });
         this.k.onKeyDown("up", () => {
-            player.moveBy(0, -PLAYER_MOVE_SPEED);
-            checkPlayerBounds();
+            player.move(0, -PLAYER_MOVE_SPEED);
         });
         this.k.onKeyDown("down", () => {
-            player.moveBy(0, PLAYER_MOVE_SPEED);
-            checkPlayerBounds();
+            player.move(0, PLAYER_MOVE_SPEED);
         });
         
-        // --- Game specific logic ends here ---
+        // Camera control: make the camera follow the player
+        this.k.onUpdate(() => {
+            // Center the camera on the player's position.
+            // This allows traveling on a map larger than the screen.
+            this.k.camPos(player.pos);
+        });
 
         // Add a close button (retained from previous example)
         const closeButton = this.k.add([
